@@ -19,6 +19,14 @@ export default defineNuxtConfig({
       });
     },
     "@pinia/nuxt",
+    [
+      "@nuxtjs/google-fonts",
+      {
+        families: {
+          Poppins: [500, 600, 700],
+        },
+      },
+    ],
   ],
 
   vite: {
