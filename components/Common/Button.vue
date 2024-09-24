@@ -1,7 +1,59 @@
 <template>
-  <div></div>
+  <v-btn :style="buttonStyle" :class="background">
+    <slot />
+  </v-btn>
 </template>
 
-<script setup></script>
+<script setup>
+const props = defineProps({
+  width: {
+    type: String,
+    default: "160px",
+  },
+  height: {
+    type: String,
+    default: "44px",
+  },
+  background: {
+    type: String,
+    default: "primary",
+    validator: (x) =>
+      ["primary", "secondary", "secondary-light", "green"].includes(x),
+  },
+});
 
-<style lang="scss" scoped></style>
+const buttonStyle = ref({
+  width: props.width,
+  height: props.height,
+  borderRadius: "8px",
+  color: "white",
+});
+</script>
+
+<style lang="scss" scoped>
+.v-btn {
+  border-radius: 8px;
+
+  :deep(.v-btn__content) {
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: 20px;
+  }
+}
+
+.primary {
+  background-color: $primary !important;
+}
+
+.secondary {
+  background-color: $secondary !important;
+}
+
+.secondary-light {
+  background-color: $secondary-light !important;
+}
+
+.green {
+  background-color: $green !important;
+}
+</style>

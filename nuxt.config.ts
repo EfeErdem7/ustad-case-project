@@ -11,6 +11,8 @@ export default defineNuxtConfig({
 
   css: ["~/assets/scss/app.scss"],
 
+  plugins: ["~/plugins/axios.js"],
+
   modules: [
     (_options, nuxt) => {
       nuxt.hooks.hook("vite:extendConfig", (config) => {
@@ -18,7 +20,6 @@ export default defineNuxtConfig({
         config.plugins.push(vuetify({ autoImport: true }));
       });
     },
-    "@pinia/nuxt",
     [
       "@nuxtjs/google-fonts",
       {
@@ -27,7 +28,13 @@ export default defineNuxtConfig({
         },
       },
     ],
+    "@pinia/nuxt",
+    "@nuxt/image",
   ],
+
+  runtimeConfig: {
+    catApiKey: process.env.CAT_API_KEY,
+  },
 
   vite: {
     vue: {
@@ -39,6 +46,20 @@ export default defineNuxtConfig({
       preprocessorOptions: {
         scss: {
           additionalData: '@import "@/assets/scss/variables.scss";',
+        },
+      },
+    },
+    server: {
+      proxy: {
+        "/api": {
+          target: "https://api.thecatapi.com/v1",
+          changeOrigin: true,
+          rewrite: (path: string) => path.replace(/^\/api/, ""),
+        },
+        "/auth": {
+          target: "http://localhost:3001",
+          changeOrigin: true,
+          rewrite: (path: string) => path.replace(/^\/auth/, ""),
         },
       },
     },

@@ -1,0 +1,10 @@
+{
+  "users": [
+    {
+      "email": "efe.erdem@tipiteq.com",
+      "password": "$2a$10$4p5NCNrf6m5ih2A8ov757OJHoIfT/DsusnsPkdsMWXOpDvs.ZbCcm",
+      "name": "Efe",
+      "id": 1
+    }
+  ]
+}
