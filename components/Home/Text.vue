@@ -4,7 +4,7 @@
       Hey,{{ !isAuth ? " Guest" : userName ? ` ${userName}` : ""
       }}{{ isAuth && !userName ? "" : "!" }}
     </h1>
-    <p class="mb-4">
+    <p>
       Welcome to the Cat Generator! Create unique, adorable cat images with just
       a click. Discover endless quirky and cute felines waiting for you to
       explore!
@@ -37,16 +37,31 @@ const userName = computed(() => userStore.user?.name);
   &-title {
     font-size: 64px;
     margin-bottom: 1rem;
+
+    @include devices(xl) {
+      font-size: 48px;
+    }
   }
 
   p {
     font-size: 32px;
     font-weight: 600;
+
+    &:first-of-type {
+      margin-bottom: 1rem;
+    }
+
+    @include devices(xl) {
+      font-size: 24px;
+    }
+
+    @include devices(md) {
+      line-height: normal;
+    }
   }
 
   a {
     color: $primary;
-    text-decoration: none;
 
     &:hover {
       text-decoration: underline;

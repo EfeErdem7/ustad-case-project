@@ -18,7 +18,7 @@ const props = defineProps({
     type: String,
     default: "primary",
     validator: (x) =>
-      ["primary", "secondary", "secondary-light", "green"].includes(x),
+      ["primary", "secondary", "secondary-light", "green", "blue"].includes(x),
   },
 });
 
@@ -51,5 +51,9 @@ const buttonStyle = ref({
 
 .green {
   background-color: $green !important;
+}
+
+.blue {
+  background-color: $blue !important;
 }
 </style>

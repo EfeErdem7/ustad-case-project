@@ -1,25 +1,44 @@
 <template>
-  <v-app-bar :elevation="0" height="100" class="header">
-    <v-container>
-      <div class="inner-container">
-        <NuxtLink to="/">
-          <v-toolbar-title class="header-title">{{ title }}</v-toolbar-title>
-          <NuxtImg src="/images/kitty.png" width="32" />
-        </NuxtLink>
-        <div class="button-container">
-          <NuxtLink v-if="isAuth && showGenerateButton" to="/generator">
-            <CommonButton :background="'green'"> Generate </CommonButton>
+  <v-app-bar :elevation="0" class="header" app>
+    <v-container class="px-4 py-0">
+      <v-row align="center" justify="space-between" no-gutters>
+        <v-col cols="auto" class="d-flex align-center">
+          <NuxtLink to="/" class="d-flex align-center">
+            <v-toolbar-title class="header-title">{{ title }}</v-toolbar-title>
+            <NuxtImg src="/images/kitty.png" width="32" class="header-title-kitty" />
           </NuxtLink>
-          <NuxtLink v-if="!isAuth && showCommonButton" to="/login">
-            <CommonButton :background="'secondary-light'"> Login </CommonButton>
-          </NuxtLink>
-          <NuxtLink v-if="isAuth && showCommonButton" to="/" @click="logout">
-            <CommonButton :background="'primary'"> Logout </CommonButton>
-          </NuxtLink>
-        </div>
-      </div>
+        </v-col>
+
+        <v-col class="d-none d-md-flex justify-end">
+          <div class="button-container">
+            <NuxtLink v-if="isAuth && showGenerateButton" to="/generator">
+              <CommonButton background="green">Generate</CommonButton>
+            </NuxtLink>
+            <NuxtLink v-if="!isAuth && showCommonButton" to="/login">
+              <CommonButton background="secondary-light">Login</CommonButton>
+            </NuxtLink>
+            <NuxtLink v-if="isAuth && showCommonButton" to="/" @click="logout">
+              <CommonButton background="primary">Logout</CommonButton>
+            </NuxtLink>
+          </div>
+        </v-col>
+
+        <v-col cols="auto" class="d-flex d-md-none">
+          <v-app-bar-nav-icon
+            color="white"
+            @click.stop="toggleDrawer"
+          ></v-app-bar-nav-icon>
+        </v-col>
+      </v-row>
     </v-container>
   </v-app-bar>
+  <AppMobileDrawer
+    v-model="drawer"
+    :isAuth="isAuth"
+    :showGenerateButton="showGenerateButton"
+    :showCommonButton="showCommonButton"
+    :logout="logout"
+  />
 </template>
 
 <script setup>
@@ -37,13 +56,19 @@ const userStore = useUserStore();
 const route = useRoute();
 
 const isAuth = computed(() => userStore.isAuthenticated);
-const showCommonButton = computed(() => {
-  return route.path === "/" || route.path === "/generator";
-});
+const showCommonButton = computed(
+  () => route.path === "/" || route.path === "/generator"
+);
 const showGenerateButton = computed(() => route.path === "/");
 
 const logout = () => {
   userStore.logout();
+};
+
+const drawer = ref(false);
+
+const toggleDrawer = () => {
+  drawer.value = !drawer.value;
 };
 </script>
 
@@ -51,27 +76,43 @@ const logout = () => {
 .header {
   background-color: $secondary !important;
 
-  .inner-container {
-    display: flex;
-    justify-content: space-between;
+  :deep(.v-toolbar__content) {
+    height: 100px !important;
 
-    a {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-      color: white;
-    }
-
-    .header-title {
-      font-weight: 600;
-      font-size: 2rem !important;
-    }
-
-    .button-container {
-      display: flex;
-      gap: 1rem;
+    @include devices(lg) {
+      height: 64px !important;
     }
   }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+  }
+
+  .header-title {
+    font-weight: 600;
+    font-size: 2rem !important;
+
+    &-kitty {
+      @include devices(lg) {
+        width: 24px !important;
+      }
+    }
+  }
+
+  .button-container {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  @include devices(lg) {
+    .header-title {
+      font-size: 1.25rem !important;
+    }
+  }
+
 }
 </style>

@@ -31,12 +31,22 @@ const isLoginPage = computed(() => route.path === "/login");
   width: 100%;
   height: calc(100vh - 100px);
 
+  @include devices(lg) {
+    top: 0;
+    height: calc(100vh - 64px);
+  }
+
   &-container {
     display: flex;
     height: 100%;
     align-items: center;
     justify-content: center;
     padding-bottom: 72px;
+
+    @include devices(lg) {
+      display: block;
+      height: auto;
+    }
   }
 }
 </style>

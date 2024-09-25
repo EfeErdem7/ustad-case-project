@@ -1,5 +1,5 @@
 <template>
-  <LoginCard />
+  <AuthCard />
 </template>
 
 <script setup></script>

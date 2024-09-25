@@ -6,9 +6,22 @@
     </h2>
 
     <div class="generator-cat">
-      <transition name="fade">
-        <NuxtImg v-if="catImageUrl" :src="catImageUrl" width="500" />
-      </transition>
+      <transition-group name="fade" tag="div" class="image-container">
+        <div v-if="showPlaceholder" key="placeholder" class="image-placeholder">
+          <v-progress-circular
+            indeterminate
+            color="primary"
+            size="64"
+          ></v-progress-circular>
+        </div>
+        <NuxtImg
+          v-show="!showPlaceholder"
+          :src="catImageUrl"
+          :key="catImageUrl"
+          class="cat-image"
+          @load="onImageLoad"
+        />
+      </transition-group>
     </div>
 
     <CommonButton
@@ -22,6 +35,7 @@
 </template>
 
 <script setup>
+import { onMounted, ref, computed } from "vue";
 import { catRepository } from "~/repositories/catRepository";
 import { useUserStore } from "~/stores/userStore";
 
@@ -29,11 +43,13 @@ const userStore = useUserStore();
 
 const catImageUrl = ref(null);
 const loading = ref(false);
+const showPlaceholder = ref(true);
 
 const userName = computed(() => userStore.user?.name);
 
 const generateCatImage = async () => {
   loading.value = true;
+  showPlaceholder.value = true;
   catImageUrl.value = null;
   try {
     const url = await catRepository.getRandomCat();
@@ -44,6 +60,16 @@ const generateCatImage = async () => {
     loading.value = false;
   }
 };
+
+const onImageLoad = () => {
+  setTimeout(() => {
+    showPlaceholder.value = false;
+  }, 50);
+};
+
+onMounted(() => {
+  generateCatImage();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -58,19 +84,42 @@ const generateCatImage = async () => {
     width: 100%;
     height: 60vh;
     padding: 1rem;
-
-    img {
-      width: 100%;
-      object-fit: contain;
-    }
   }
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.image-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cat-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition: opacity 0.5s ease;
 }
-.fade-enter,
+
+.fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }

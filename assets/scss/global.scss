@@ -2,17 +2,43 @@
   box-sizing: border-box;
 }
 
-html,
+html {
+  overflow: hidden;
+
+  @include devices(lg) {
+    padding-top: 64px;
+    overflow-y: auto;
+  }
+}
+
 body {
   padding: 0;
   margin: 0;
   font-family: $font-family;
   height: 100vh;
-  overflow: hidden;
+
+  @include devices(lg) {
+    height: auto;
+  }
+}
+
+a {
+  text-decoration: none;
 }
 
 .v-btn {
   text-transform: none !important;
   letter-spacing: normal !important;
   border-radius: 8px !important;
+}
+
+.v-application__wrap {
+  @include devices(lg) {
+    min-height: auto !important;
+  }
+}
+
+.v-navigation-drawer__scrim {
+  width: 100vw !important;
+  height: calc(100vh - 64px) !important;
 }

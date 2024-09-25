@@ -1,14 +1,7 @@
 <template>
   <v-card class="login" flat rounded :loading="loading">
     <v-card-text>
-      <div class="d-flex justify-center">
-        <v-btn-toggle v-model="isLogin" class="login-toggle">
-          <v-btn :value="true" @click.stop="preventToggle(true)">Login</v-btn>
-          <v-btn :value="false" @click.stop="preventToggle(false)"
-            >Sign Up</v-btn
-          >
-        </v-btn-toggle>
-      </div>
+      <AuthToggle v-model:isLogin="isLogin" />
 
       <v-form
         @submit.prevent="handleSubmit"
@@ -18,6 +11,7 @@
         <v-text-field
           v-if="!isLogin"
           v-model="name"
+          :key="isLogin"
           label="Name"
           variant="outlined"
         ></v-text-field>
@@ -25,6 +19,7 @@
         <v-text-field
           v-model="email"
           :rules="[rules.required, rules.email]"
+          :key="isLogin"
           label="Email"
           type="email"
           variant="outlined"
@@ -34,6 +29,7 @@
         <v-text-field
           v-model="password"
           :rules="[rules.required]"
+          :key="isLogin"
           label="Password"
           type="password"
           variant="outlined"
@@ -44,6 +40,7 @@
           v-if="!isLogin"
           v-model="confirmPassword"
           :rules="[rules.required, rules.matchPassword]"
+          :key="isLogin"
           label="Confirm Password"
           type="password"
           variant="outlined"
@@ -70,9 +67,10 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "~/stores/userStore";
+import useValidationRules from "~/composables/useValidationRules";
 
 const name = ref("");
 const email = ref("");
@@ -84,12 +82,7 @@ const userStore = useUserStore();
 const form = ref(null);
 const loading = ref(false);
 
-const rules = {
-  required: (value) => !!value || "Required.",
-  email: (value) => /.+@.+\..+/.test(value) || "E-mail must be valid.",
-  matchPassword: (value) =>
-    value === password.value || "Passwords do not match.",
-};
+const rules = useValidationRules(password);
 
 const handleSubmit = async () => {
   const { valid } = await form.value.validate();
@@ -112,10 +105,20 @@ const handleSubmit = async () => {
   }
 };
 
-const preventToggle = (value) => {
-  if (isLogin.value === value) return;
-  isLogin.value = value;
+const resetForm = () => {
+  name.value = "";
+  email.value = "";
+  password.value = "";
+  confirmPassword.value = "";
+  userStore.error = null;
+  if (form.value) {
+    form.value.resetValidation();
+  }
 };
+
+watch(isLogin, () => {
+  resetForm();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -124,34 +127,9 @@ const preventToggle = (value) => {
   padding: 12px 24px;
   border-radius: 8px;
 
-  &-toggle {
-    display: flex;
-    gap: 8px;
-    padding: 8px 10px;
-    background-color: $secondary;
-    height: 64px;
-    border-radius: 50px;
-    margin-bottom: 2rem;
-
-    &:deep(.v-btn--active) {
-      background-color: $primary;
-
-      .v-btn__overlay {
-        opacity: 1 !important;
-        background-color: unset !important;
-      }
-    }
-
-    button {
-      width: 120px;
-      text-transform: none;
-      letter-spacing: normal;
-      background-color: transparent;
-      flex: 1;
-      color: white;
-      border-radius: 50px !important;
-      font-size: 20px;
-    }
+  @include devices(md) {
+    margin-top: 40px;
+    width: 100%;
   }
 }
 </style>

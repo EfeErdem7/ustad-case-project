@@ -51,7 +51,6 @@ const props = defineProps<{
 
       a {
         color: $primary;
-        text-decoration: none;
 
         &:hover {
           text-decoration: underline;

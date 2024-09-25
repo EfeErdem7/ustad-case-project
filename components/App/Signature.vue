@@ -9,7 +9,7 @@
 
 <style lang="scss" scoped>
 .signature {
-  position: absolute;
+  position: fixed;
   bottom: 16px;
   left: 50%;
   transform: translate(-50%, 0);
@@ -22,7 +22,6 @@
 
   a {
     color: $primary;
-    text-decoration: none;
 
     &:hover {
       text-decoration: underline;
