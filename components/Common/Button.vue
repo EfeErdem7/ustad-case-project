@@ -32,11 +32,7 @@ const buttonStyle = ref({
 
 <style lang="scss" scoped>
 .v-btn {
-  border-radius: 8px;
-
   :deep(.v-btn__content) {
-    text-transform: none;
-    letter-spacing: normal;
     font-size: 20px;
   }
 }

@@ -18,6 +18,7 @@
   background: $bg-color;
   border-radius: 80px;
   color: $secondary;
+  white-space: nowrap;
 
   a {
     color: $primary;

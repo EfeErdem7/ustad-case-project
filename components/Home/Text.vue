@@ -1,6 +1,9 @@
 <template>
   <div class="home-text">
-    <h1 class="home-text-title">Hey, {{ userName || "Guest" }}!</h1>
+    <h1 class="home-text-title">
+      Hey,{{ !isAuth ? " Guest" : userName ? ` ${userName}` : ""
+      }}{{ isAuth && !userName ? "" : "!" }}
+    </h1>
     <p class="mb-4">
       Welcome to the Cat Generator! Create unique, adorable cat images with just
       a click. Discover endless quirky and cute felines waiting for you to

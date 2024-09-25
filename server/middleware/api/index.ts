@@ -1,3 +1,4 @@
+// server/middleware/api/index.ts
 import {
   defineEventHandler,
   proxyRequest,
@@ -23,7 +24,7 @@ export default defineEventHandler(async (event) => {
   const queryString = new URLSearchParams(
     query as Record<string, string>
   ).toString();
-  const targetUrl = `https://api.thecatapi.com${apiPath}?${queryString}`;
+  const targetUrl = `https://api.thecatapi.com/v1${apiPath}?${queryString}`;
 
   const headers: Record<string, string> = {
     ...getRequestHeaders(event),

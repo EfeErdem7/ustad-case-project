@@ -45,17 +45,13 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: '@import "@/assets/scss/variables.scss";',
+          additionalData: '@use "@/assets/scss/variables.scss" as *;',
+          api: "modern-compiler",
         },
       },
     },
     server: {
       proxy: {
-        "/api": {
-          target: "https://api.thecatapi.com/v1",
-          changeOrigin: true,
-          rewrite: (path: string) => path.replace(/^\/api/, ""),
-        },
         "/auth": {
           target: "http://localhost:3001",
           changeOrigin: true,

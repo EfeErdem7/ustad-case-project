@@ -5,6 +5,12 @@
       "password": "$2a$10$4p5NCNrf6m5ih2A8ov757OJHoIfT/DsusnsPkdsMWXOpDvs.ZbCcm",
       "name": "Efe",
       "id": 1
+    },
+    {
+      "email": "efeerdem2001@hotmail.com",
+      "password": "$2a$10$18ptXuo76cR3e4vRueClWea2Next9OokOKSXMH/QanSCNS/Q4UOsm",
+      "name": "",
+      "id": 2
     }
   ]
 }
