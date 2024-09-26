@@ -1,10 +1,3 @@
 {
-  "users": [
-    {
-      "email": "efe.erdem@tipiteq.com",
-      "password": "$2a$10$R4dwdEYKbgOZlOQpnwwNjup8oGP6fSlPBnH6LDXtFbDgXbpO4.eqy",
-      "name": "",
-      "id": 1
-    }
-  ]
+  "users": []
 }
