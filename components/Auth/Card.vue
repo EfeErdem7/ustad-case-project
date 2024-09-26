@@ -69,7 +69,7 @@
 <script setup>
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
-import { useUserStore } from "~/stores/userStore";
+import { useUserStore } from "~/store/userStore";
 import useValidationRules from "~/composables/useValidationRules";
 
 const name = ref("");

@@ -4,6 +4,7 @@ import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 export default defineNuxtConfig({
   compatibilityDate: "2024-09-23",
   devtools: { enabled: true },
+  ssr: true,
 
   build: {
     transpile: ["vuetify"],
@@ -30,10 +31,12 @@ export default defineNuxtConfig({
     ],
     "@pinia/nuxt",
     "@nuxt/image",
+    "@pinia-plugin-persistedstate/nuxt",
   ],
 
   runtimeConfig: {
     catApiKey: process.env.CAT_API_KEY,
+    apiBaseUrl: process.env.API_BASE_URL,
   },
 
   vite: {
@@ -54,7 +57,7 @@ export default defineNuxtConfig({
     server: {
       proxy: {
         "/auth": {
-          target: "http://localhost:3001",
+          target: process.env.AUTH_BASE_URL,
           changeOrigin: true,
           rewrite: (path: string) => path.replace(/^\/auth/, ""),
         },

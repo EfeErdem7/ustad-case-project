@@ -36,10 +36,11 @@
 
 <script setup>
 import { onMounted, ref, computed } from "vue";
-import { catRepository } from "~/repositories/catRepository";
-import { useUserStore } from "~/stores/userStore";
+import { useUserStore } from "~/store/userStore";
+import { useCatStore } from "~/store/catStore";
 
 const userStore = useUserStore();
+const catStore = useCatStore();
 
 const catImageUrl = ref("");
 const isLoading = ref(false);
@@ -52,7 +53,7 @@ const generateCatImage = async () => {
   showPlaceholder.value = true;
 
   try {
-    catImageUrl.value = await catRepository.getRandomCat();
+    catImageUrl.value = await catStore.getRandomCat();
   } catch (error) {
     console.error("Failed to fetch cat image:", error);
     showPlaceholder.value = false;

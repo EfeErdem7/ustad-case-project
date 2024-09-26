@@ -25,7 +25,7 @@
             </NuxtLink>
           </div>
         </v-col>
-
+        
         <v-col cols="auto" class="d-flex d-md-none">
           <v-app-bar-nav-icon
             color="white"
@@ -35,6 +35,7 @@
       </v-row>
     </v-container>
   </v-app-bar>
+
   <AppMobileDrawer
     v-model="drawer"
     :isAuth="isAuth"
@@ -45,7 +46,7 @@
 </template>
 
 <script setup>
-import { useUserStore } from "~/stores/userStore";
+import { useUserStore } from "~/store/userStore";
 import { useRoute } from "vue-router";
 
 const props = defineProps({

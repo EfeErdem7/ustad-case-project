@@ -1,18 +1,30 @@
 import axios from "axios";
-import { useUserStore } from "~/stores/userStore";
+import { useUserStore } from "~/store/userStore";
+import AuthService from "~/services/AuthService";
+import CatService from "~/services/CatService";
 
-export default defineNuxtPlugin(() => {
-  const userStore = useUserStore();
+export default defineNuxtPlugin((nuxtApp) => {
+  const authInstance = axios.create({
+    baseURL: '/auth',
+  });
+  const apiInstance = axios.create({
+    baseURL: "/api",
+  });
 
-  axios.interceptors.request.use(
-    (config) => {
-      if (userStore.isAuthenticated && userStore.token) {
-        config.headers.Authorization = `Bearer ${userStore.token}`;
-      }
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
+  authInstance.interceptors.request.use((config) => {
+    const userStore = useUserStore();
+    const token = userStore.token;
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-  );
+
+    return config;
+  });
+
+  authInstance.authService = new AuthService(authInstance);
+  apiInstance.catService = new CatService(apiInstance);
+
+  nuxtApp.provide("authApi", authInstance);
+  nuxtApp.provide("api", apiInstance);
 });
