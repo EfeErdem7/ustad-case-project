@@ -11,7 +11,7 @@
         <v-text-field
           v-if="!isLogin"
           v-model="name"
-          :key="isLogin"
+          :key="'name-' + isLogin"
           label="Name"
           variant="outlined"
         ></v-text-field>
@@ -19,7 +19,7 @@
         <v-text-field
           v-model="email"
           :rules="[rules.required, rules.email]"
-          :key="isLogin"
+          :key="'email-' + isLogin"
           label="Email"
           type="email"
           variant="outlined"
@@ -29,7 +29,7 @@
         <v-text-field
           v-model="password"
           :rules="[rules.required]"
-          :key="isLogin"
+          :key="'password-' + isLogin"
           label="Password"
           type="password"
           variant="outlined"
@@ -40,7 +40,7 @@
           v-if="!isLogin"
           v-model="confirmPassword"
           :rules="[rules.required, rules.matchPassword]"
-          :key="isLogin"
+          :key="'confirmPassword-' + isLogin"
           label="Confirm Password"
           type="password"
           variant="outlined"
