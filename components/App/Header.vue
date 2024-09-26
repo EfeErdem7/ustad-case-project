@@ -11,7 +11,10 @@
 
         <v-col class="d-none d-md-flex justify-end">
           <div class="button-container">
-            <NuxtLink v-if="isAuth && showGenerateButton" to="/generator">
+            <NuxtLink v-if="!isHomePage" to="/">
+              <CommonButton background="blue">Home</CommonButton>
+            </NuxtLink>
+            <NuxtLink v-if="isAuth && isHomePage" to="/generator">
               <CommonButton background="green">Generate</CommonButton>
             </NuxtLink>
             <NuxtLink v-if="!isAuth && showCommonButton" to="/login">
@@ -35,7 +38,7 @@
   <AppMobileDrawer
     v-model="drawer"
     :isAuth="isAuth"
-    :showGenerateButton="showGenerateButton"
+    :isHomePage="isHomePage"
     :showCommonButton="showCommonButton"
     :logout="logout"
   />
@@ -59,7 +62,7 @@ const isAuth = computed(() => userStore.isAuthenticated);
 const showCommonButton = computed(
   () => route.path === "/" || route.path === "/generator"
 );
-const showGenerateButton = computed(() => route.path === "/");
+const isHomePage = computed(() => route.path === "/");
 
 const logout = () => {
   userStore.logout();

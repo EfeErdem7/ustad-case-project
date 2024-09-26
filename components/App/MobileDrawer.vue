@@ -7,8 +7,15 @@
     class="d-md-none h-screen drawer"
   >
     <v-list class="drawer-list">
+      <NuxtLink v-if="!isHomePage" to="/" @click="closeDrawer">
+        <v-list-item>
+          <v-list-item-title class="mobile-link">
+            <CommonButton background="blue">Home</CommonButton>
+          </v-list-item-title>
+        </v-list-item>
+      </NuxtLink>
       <NuxtLink
-        v-if="isAuth && showGenerateButton"
+        v-if="isAuth && isHomePage"
         to="/generator"
         @click="closeDrawer"
       >
@@ -50,7 +57,7 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
-  showGenerateButton: {
+  isHomePage: {
     type: Boolean,
     required: true,
   },

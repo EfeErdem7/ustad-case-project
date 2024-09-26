@@ -127,7 +127,7 @@ watch(isLogin, () => {
   padding: 12px 24px;
   border-radius: 8px;
 
-  @include devices(md) {
+  @include devices(lg) {
     margin-top: 40px;
     width: 100%;
   }

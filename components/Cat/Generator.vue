@@ -6,27 +6,27 @@
     </h2>
 
     <div class="generator-cat">
-      <transition-group name="fade" tag="div" class="image-container">
-        <div v-if="showPlaceholder" key="placeholder" class="image-placeholder">
-          <v-progress-circular
-            indeterminate
-            color="primary"
-            size="64"
-          ></v-progress-circular>
+      <div class="image-container">
+        <div
+          class="image-placeholder"
+          :class="{ 'fade-out': !showPlaceholder }"
+        >
+          <v-progress-circular indeterminate color="primary" :size="64" />
         </div>
         <NuxtImg
-          v-show="!showPlaceholder"
+          v-if="catImageUrl"
           :src="catImageUrl"
           :key="catImageUrl"
           class="cat-image"
+          :class="{ 'fade-in': !showPlaceholder }"
           @load="onImageLoad"
         />
-      </transition-group>
+      </div>
     </div>
 
     <CommonButton
       @click="generateCatImage"
-      :loading="loading"
+      :loading="isLoading"
       background="blue"
     >
       Generate
@@ -41,42 +41,48 @@ import { useUserStore } from "~/stores/userStore";
 
 const userStore = useUserStore();
 
-const catImageUrl = ref(null);
-const loading = ref(false);
+const catImageUrl = ref("");
+const isLoading = ref(false);
 const showPlaceholder = ref(true);
 
-const userName = computed(() => userStore.user?.name);
+const userName = computed(() => userStore.user?.name ?? "");
 
 const generateCatImage = async () => {
-  loading.value = true;
+  isLoading.value = true;
   showPlaceholder.value = true;
-  catImageUrl.value = null;
+
   try {
-    const url = await catRepository.getRandomCat();
-    catImageUrl.value = url;
-  } catch (err) {
-    console.error(err);
+    catImageUrl.value = await catRepository.getRandomCat();
+  } catch (error) {
+    console.error("Failed to fetch cat image:", error);
+    showPlaceholder.value = false;
   } finally {
-    loading.value = false;
+    isLoading.value = false;
   }
 };
 
 const onImageLoad = () => {
   setTimeout(() => {
     showPlaceholder.value = false;
-  }, 50);
+  }, 100);
 };
 
-onMounted(() => {
-  generateCatImage();
-});
+onMounted(generateCatImage);
 </script>
 
 <style lang="scss" scoped>
 .generator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   max-width: 60%;
   text-align: center;
+
+  @include devices(md) {
+    gap: 12px;
+    max-width: 100%;
+  }
 
   &-cat {
     display: flex;
@@ -84,43 +90,48 @@ onMounted(() => {
     width: 100%;
     height: 60vh;
     padding: 1rem;
+
+    @include devices(md) {
+      height: 50vh;
+      padding: 0;
+    }
   }
-}
 
-.image-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
+  .image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
 
-.image-placeholder {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #f0f0f0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .image-placeholder,
+  .cat-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.5s ease;
+  }
 
-.cat-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
+  .image-placeholder {
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
+    &.fade-out {
+      opacity: 0;
+    }
+  }
 
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
+  .cat-image {
+    object-fit: contain;
+    opacity: 0;
+
+    &.fade-in {
+      opacity: 1;
+    }
+  }
 }
 </style>

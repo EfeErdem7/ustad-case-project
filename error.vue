@@ -34,6 +34,10 @@ const props = defineProps<{
   &-inner {
     max-width: 1000px;
 
+    @include devices(md) {
+      max-width: 100%;
+    }
+
     &-title {
       font-size: 64px;
     }
@@ -44,9 +48,19 @@ const props = defineProps<{
       font-size: 40px;
       font-weight: 600;
 
+      @include devices(md) {
+        flex-direction: column;
+        font-size: 24px;
+        gap: 24px;
+      }
+
       p {
         flex: 2;
         line-height: 140%;
+
+        @include devices(md) {
+          flex: 1;
+        }
       }
 
       a {
@@ -59,6 +73,14 @@ const props = defineProps<{
 
       img {
         flex: 1;
+
+        @include devices(md) {
+          width: 400px;
+        }
+
+        @include devices(sm) {
+          width: 80%;
+        }
       }
     }
   }

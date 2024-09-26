@@ -44,7 +44,6 @@ const isLoginPage = computed(() => route.path === "/login");
     padding-bottom: 72px;
 
     @include devices(lg) {
-      display: block;
       height: auto;
     }
   }
