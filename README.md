@@ -1,3 +1,7 @@
+# Introduction
+
+This is a cat generator project made with Nuxt 3, Vue 3 and vuetify. It sends request to a cat API service with a api key using proxy. You should provide `CAT_API_KEY` in `.env` file. In addition to that, you need to run the fake json backend by running the command `npm run backend` to work with the auth.
+
 # Nuxt 3 Minimal Starter
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
